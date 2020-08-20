@@ -1,7 +1,9 @@
-import React, {useState, useEffect} from 'react'
+import React, { useState } from 'react'
 import { ListGroup, Row, Col } from 'react-bootstrap'
 
 function Ranking(props) {
+
+  // getting the global rankging from localStorage
   const getRanking = () => {
     var ranking = []
     let games = JSON.parse(localStorage.getItem('game'))

@@ -12,11 +12,9 @@ import MyNavBar from './components/MyNavBar'
 import Ranking from './components/Ranking'
 import MyGames from './components/MyGames'
 import { Row, Col } from 'react-bootstrap'
-import axios from 'axios';
-
-import './App.css';
 
 function App() {
+  // getting from localStorage login information
   const [loggedIn, setLogin] = useState(
     localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')).isUserLoggedIn
     : false
@@ -26,11 +24,12 @@ function App() {
     : ''
   )
 
-  const myCallBack = (dataFromChild) => {
+  const loginCallback = (dataFromChild) => {
     setLogin(dataFromChild)
   }
 
   useEffect(() => {
+    // set user information if user is logged in
     if(loggedIn)
       setUser(JSON.parse(localStorage.getItem('user')).nick_name)
   }, [loggedIn]);
@@ -38,10 +37,10 @@ function App() {
   return (
     <Router>
       <div>
-        <MyNavBar myNickName={user} loggedIn={loggedIn} callBackFromParent={myCallBack} />
+        <MyNavBar myNickName={user} loggedIn={loggedIn} loginCallback={loginCallback} />
         <Switch>
           <Route path="/login">
-            <Login callBackFromParent={myCallBack} />
+            <Login loginCallback={loginCallback} />
           </Route>
           <Route path="/ranking">
             {

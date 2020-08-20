@@ -41,18 +41,11 @@ function Login(props) {
         }]
       }
       localStorage.setItem('game', JSON.stringify(game))
-      props.callBackFromParent(true)
+      props.loginCallback(true)
     }
   }, [boolSave]);
   if(canRender()) {
     return (
-      // <form onSubmit={handleSubmit}>
-      //   <label>
-      //     Nick Name:
-      //     <input type="text" value={nick_name} onChange={handleChange} />
-      //   </label>
-      //   <input type="submit" value="Submit" />
-      // </form>
       <Row className="mt-5">
         <Col md={{ span: 6, offset: 3 }}>
         <Form onSubmit={handleSubmit}>

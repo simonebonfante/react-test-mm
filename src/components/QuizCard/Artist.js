@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import { Button } from 'react-bootstrap'
 
 function Artist(props) {
@@ -7,6 +7,7 @@ function Artist(props) {
   const evaluateResponse = () => {
     if (props.correct) {
       setVariantButton("success")
+      // nextQuestion it is called on QuizCard, which in turn is called on Quiz
       props.nextQuestion(1, props.track_id)
     } else {
       setVariantButton("danger")

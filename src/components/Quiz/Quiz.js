@@ -8,8 +8,9 @@ import MusixMatchService from '../../services/MusixMatchService'
 import config from '../../config'
 
 function Quiz(props) {
+  // get the game still open, if they are all finished i take the last one 
   var myGame = JSON.parse(localStorage.getItem('game'))[props.user].filter(el => !el.game_over)[0]
-  || JSON.parse(localStorage.getItem('game'))[props.user][JSON.parse(localStorage.getItem('game'))[props.user].length -1] // oppure l'ultimo
+  || JSON.parse(localStorage.getItem('game'))[props.user][JSON.parse(localStorage.getItem('game'))[props.user].length -1]
 
   const [status_game, setStatusGame] = useState(myGame.question_number);
   const [gameState, setGameState] = useState(myGame)
@@ -20,6 +21,7 @@ function Quiz(props) {
   const [quiz, setQuiz] = useState([])
   const [newGame, setNewGame] = useState(0)
 
+  // get the best score, if at least one game has been completed
   var bscore = JSON.parse(localStorage.getItem('game'))[props.user]
   .filter(el => el.game_over)
   .sort(function(a, b) {
@@ -35,6 +37,7 @@ function Quiz(props) {
 
   const [best_score, setBestScore] = useState(bscore ? bscore.score : 'still none')
  
+  // function which shuffle an array
   const shuffle = (array) => {
     for (let i = array.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
@@ -43,18 +46,19 @@ function Quiz(props) {
     return array;
   }
 
+  // set new game
   const newGameCallback = (data) => {
     setNewGame(newGame+data)
   }
 
+  // getDataQuestionQuiz creates an array of n quiz having: lyrics, track_id, and an array of 3 artist one of which is right and 2 are wrong.
+  // array of track_lyrics and artist are shuffled
   const getDataQuestionQuiz = () => {
     let arr = []
     for (let i = 0; i<track_list.length; i++) {
       let artist_tmp = artist_list
       let correct_arstist = artist_tmp.filter(el => el.track_id === track_list[i].track_id)[0].artist
       var [wrong_artist1, wrong_artist2] = shuffle(artist_tmp).filter(el => el.track_id !== track_list[i].track_id).slice(0,2)
-      // let wrong_artist1 = shuffle(artist_tmp).filter(el => el.track_id !== track_list[i].track_id)[0].artist // shuffle 1 volta
-      // let wrong_artist2 = shuffle(artist_tmp).filter(el => el.track_id !== track_list[i].track_id && el.artist !== wrong_artist1)[1].artist
       let artists = [
         {name: correct_arstist, correct: true},
         {name: wrong_artist1.artist, correct: false},
@@ -65,6 +69,7 @@ function Quiz(props) {
     return shuffle(arr)
   }
 
+  // callback to go to the next question. For each question the status of the current game is always stored in the local storage
   const nextQuestion = (score, track_id) => {
     var game = JSON.parse(localStorage.getItem('game'))
     for (let i = 0; i<game[props.user].length; i++) {
@@ -96,6 +101,7 @@ function Quiz(props) {
     return true
   }
 
+  // getLyrics gets lyrics for each tracks and create an array of artists and track objects
   async function getLyrics(el) {
     return MusixMatchService.getLyrics(el.track.track_id).then((lyrics) => {
       var track = {
@@ -126,6 +132,7 @@ function Quiz(props) {
   useEffect(() => {
     if(initialState) {
       setInitialState(false)
+      // getting tracks from mm API
       MusixMatchService.getTracks().then(async (tl) => {
         var track_list = await getTracks(tl)
         setTrackList(track_list)
@@ -136,6 +143,7 @@ function Quiz(props) {
     }
   })
 
+  // once the track array is set, the quiz object is created
   useEffect(() => {
     if(!initialState && quiz.length === 0) {
       setQuiz(getDataQuestionQuiz())
@@ -162,13 +170,10 @@ function Quiz(props) {
             <h1 >Who Sings?</h1>
             <i>The quiz consists of {config.n_quiz} question{config.n_quiz > 1 ? 's' : ''}</i>
           </div>
-          {/* {
-            <div className="mb-5"><b>Best Score: {gameState.score} </b></div> 
-          } */}
           <Score user={props.user} score={gameState.score} best_score={best_score}/>
           { !loading ?
               status_game < track_list.length ?
-                // questionsShuffled(questions)
+                // if not loading and the user is not at the end of the game ...
                 quiz
                 .map((el, index) =>
                   index === status_game ?

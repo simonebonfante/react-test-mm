@@ -13,8 +13,8 @@ You will also see any lint errors in the console.
 
 You can configure some parameters of the project:
 
-IN "src" folder you can find config.js file and edit:
+In "src" folder you can find config.js file and edit:
 - (apiurl) API access
 - (apikey) Personal API key
-- (n_quiz) the number of quizzes
-- (count_down) game time countdown for every quiz card, in seconds
+- (n_quiz) The number of quizzes
+- (count_down) Game time countdown for every quiz card, in seconds

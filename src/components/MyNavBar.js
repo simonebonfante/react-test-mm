@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import { Link } from "react-router-dom";
 import { Navbar, Nav, NavDropdown } from 'react-bootstrap'
 
@@ -8,7 +8,7 @@ function MyNavBar(props) {
       isUserLoggedIn: false,
       nick_name: ""
     }))
-    props.callBackFromParent(false)
+    props.loginCallback(false)
   }
 
   return (
@@ -28,7 +28,7 @@ function MyNavBar(props) {
         </Nav>
         <Nav>
           {
-            props.myNickName !== '' && (
+            props.myNickName !== '' && props.loggedIn && (
               <NavDropdown title={"Hi, "+props.myNickName} id="collasible-nav-dropdown">
                 <NavDropdown.Item>
                   <Link to="/ranking">Ranking</Link>

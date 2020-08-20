@@ -4,6 +4,7 @@ import config from '../../config'
 function CountDown(props) {
   const [seconds, setSeconds] = useState(config.count_down)
 
+  // "count_down" second countdown, editable on the config file
   useEffect(() => {
     const myInterval = setInterval(() => {
       if (seconds > 0)

@@ -1,7 +1,9 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import { Button } from 'react-bootstrap'
 
 function NewGame(props) {
+
+  // create on localStorage a new istance of the game, and calls a callBack "newGame" to trigger the event
   function newGame() {
     var game = JSON.parse(localStorage.getItem('game'))
     game[props.user].push({

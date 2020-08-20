@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Card, Row, Col, Button } from 'react-bootstrap'
+import { Card, Row, Col } from 'react-bootstrap'
 import HeaderCard from './HeaderCard'
 import Lyrics from './Lyrics'
 import Artist from './Artist'
@@ -17,7 +17,7 @@ function QuizCard(props) {
   useEffect(() => {
     return () => {}
   });
-  const lista = props.el.artists.map((el, index) =>
+  const artists = props.el.artists.map((el, index) =>
     <Col key={index} className="text-center">
       <Artist artist={el.name} track_id={props.el.track_id} correct={el.correct} n={props.n} disabled={disabled} nextQuestion={nextQuestion}/>
     </Col>
@@ -31,7 +31,7 @@ function QuizCard(props) {
           <Lyrics text={props.el.lyrics}/>
           <Row className="mt-5 text-center">
             {
-              lista
+              artists
             }
           </Row>
         </Card.Body>
