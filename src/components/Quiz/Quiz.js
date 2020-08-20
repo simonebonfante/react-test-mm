@@ -17,6 +17,7 @@ function Quiz(props) {
   const [initialState, setInitialState] = useState(true)
   const [track_list, setTrackList] = useState([])
   const [artist_list, setArtistList] = useState([])
+  const [quiz, setQuiz] = useState([])
   const [newGame, setNewGame] = useState(0)
 
   const shuffle = (array) => {
@@ -32,24 +33,26 @@ function Quiz(props) {
   }
 
   const getDataQuestionQuiz = () => {
+    console.log(track_list.length)
     let arr = []
     for (let i = 0; i<track_list.length; i++) {
       let artist_tmp = artist_list
       let correct_arstist = artist_tmp.filter(el => el.track_id === track_list[i].track_id)[0].artist
-      let wrong_artist1 = shuffle(artist_tmp).filter(el => el.track_id !== track_list[i].track_id)[0].artist
-      let wrong_artist2 = shuffle(artist_tmp).filter(el => el.track_id !== track_list[i].track_id && el.artist !== wrong_artist1)[1].artist
+      var [wrong_artist1, wrong_artist2] = shuffle(artist_tmp).filter(el => el.track_id !== track_list[i].track_id).slice(0,2)
+      // let wrong_artist1 = shuffle(artist_tmp).filter(el => el.track_id !== track_list[i].track_id)[0].artist // shuffle 1 volta
+      // let wrong_artist2 = shuffle(artist_tmp).filter(el => el.track_id !== track_list[i].track_id && el.artist !== wrong_artist1)[1].artist
       let artists = [
         {name: correct_arstist, correct: true},
-        {name: wrong_artist1, correct: false},
-        {name: wrong_artist2, correct: false}
+        {name: wrong_artist1.artist, correct: false},
+        {name: wrong_artist2.artist, correct: false}
       ]
-      arr[i] = {lyrics: track_list[i].lyrics, artists: shuffle(artists)}
+      arr[i] = {lyrics: track_list[i].lyrics, artists: shuffle(artists), track_id: track_list[i].track_id}
     }
     console.log('arr', arr)
     return shuffle(arr)
   }
 
-  const nextQuestion = (point) => {
+  const nextQuestion = (score, track_id) => {
     var game = JSON.parse(localStorage.getItem('game'))
     for (let i = 0; i<game[props.user].length; i++) {
       var el = game[props.user][i]
@@ -57,7 +60,7 @@ function Quiz(props) {
         game[props.user][i] = {
           ...el,
           question_number: status_game+1,
-          points: el.points + point,
+          score: el.score + score,
           game_over: status_game === config.n_quiz-1 ? true : false
         }
         break
@@ -68,7 +71,7 @@ function Quiz(props) {
     localStorage.setItem('game', JSON.stringify(game))
     setTimeout(() => {
       setStatusGame(status_game+1)
-    }, 2500)
+    }, 500)
   }
 
   var canRender = () => {
@@ -116,9 +119,19 @@ function Quiz(props) {
         var track_list = await getTracks(tl)
         setTrackList(track_list)
       }).catch(err => console.log(err))
-      .finally(() => setLoading(false))
+      .finally(() => {
+        // setLoading(false)
+      })
     }
   })
+
+  useEffect(() => {
+    if(!initialState && quiz.length === 0) {
+      console.log('EI EHIEJEIHJEIEHJE')
+      setQuiz(getDataQuestionQuiz())
+      setLoading(false)
+    }
+  }, [track_list])
 
   useEffect(() => {
     if(newGame !== 0) {
@@ -139,13 +152,13 @@ function Quiz(props) {
             <i>The quiz consists of {config.n_quiz} question{config.n_quiz > 1 ? 's' : ''}</i>
           </div>
           {/* {
-            <div className="mb-5"><b>Best Score: {gameState.points} </b></div> 
+            <div className="mb-5"><b>Best Score: {gameState.score} </b></div> 
           } */}
-          <Score user={props.user} score={gameState.points}/>
+          <Score user={props.user} score={gameState.score}/>
           { !loading ?
               status_game < track_list.length ?
                 // questionsShuffled(questions)
-                getDataQuestionQuiz()
+                quiz
                 .map((el, index) =>
                   index === status_game ?
                   <QuizCard key={index} n={index+1} el={el} nextQuestion={nextQuestion}/>
@@ -153,7 +166,7 @@ function Quiz(props) {
                 )
               : <div className="text-center">
                   <h1>Game Over</h1>
-                  <p> You answered {gameState.points} out of {config.n_quiz} questions correctly</p>
+                  <p> You answered {gameState.score} out of {config.n_quiz} questions correctly</p>
                   <NewGame user={props.user} newGame={newGameCallback}/>
                 </div>
             : <div className="text-center">

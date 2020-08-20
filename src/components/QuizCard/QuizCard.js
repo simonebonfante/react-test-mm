@@ -8,9 +8,9 @@ import CountDown from './CountDown'
 function QuizCard(props) {
   const [disabled, setButtonDisabled] = useState(false)
 
-  const nextQuestion = (point) => {
+  const nextQuestion = (score, track_id) => {
     setButtonDisabled(true)
-    props.nextQuestion(point)
+    props.nextQuestion(score, track_id)
   }  
   // // const artists = props.artists
   // console.log(generateQuizQuestion())
@@ -29,11 +29,12 @@ function QuizCard(props) {
   });
   const lista = props.el.artists.map((el, index) =>
     <Col key={index} className="text-center">
-      <Artist artist={el.name} correct={el.correct} n={props.n} disabled={disabled} nextQuestion={nextQuestion}/>
+      <Artist artist={el.name} track_id={props.el.track_id} correct={el.correct} n={props.n} disabled={disabled} nextQuestion={nextQuestion}/>
     </Col>
   )
   return (
     <div>
+      <CountDown nextQuestion={nextQuestion} />
       <Card>
         <HeaderCard text={"question number " + props.n}/>
         <Card.Body>
@@ -45,7 +46,6 @@ function QuizCard(props) {
           </Row>
         </Card.Body>
       </Card>
-      <CountDown nextQuestion={nextQuestion} />
     </div>
   )
 }

@@ -20,9 +20,11 @@ function MyNavBar(props) {
           <Nav>
             <Link  to="/">Home</Link>
           </Nav>
-          <Nav style={{"marginLeft": "10px"}}>
-            <Link  to="/login">Login</Link>
-          </Nav>
+          {
+            !props.loggedIn && <Nav style={{"marginLeft": "10px"}}>
+              <Link  to="/login">Login</Link>
+            </Nav>
+          }
         </Nav>
         <Nav>
           {

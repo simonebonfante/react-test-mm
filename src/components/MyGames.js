@@ -7,6 +7,7 @@ function MyGames(props) {
     var mygames = JSON.parse(localStorage.getItem('game'))[props.user].filter(el => el.game_over)
     return mygames.slice(0, config.n_quiz)
   }
+  const [mygames, setMyGames] = useState(getMygames())
 
   return (
     <div className="text-center mt-2">
@@ -21,9 +22,11 @@ function MyGames(props) {
         <Col md={{ span: 6, offset: 3 }}>
         <ListGroup>
             {
-              getMygames().map((el, index) =>
-                <ListGroup.Item key={index}>{el.points} points</ListGroup.Item>
-              )
+              mygames.length > 0 ?
+              mygames.map((el, index) =>
+                  <ListGroup.Item key={index}>{el.score} score</ListGroup.Item>
+                )
+              : <h2>no data available yet</h2>
             }
           </ListGroup>
         </Col>

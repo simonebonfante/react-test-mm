@@ -9,16 +9,16 @@ function Ranking(props) {
       var game =
         games[user].filter(el => el.game_over)
         .sort((a, b) => {
-          if (a.points < b.points) {
+          if (a.score < b.score) {
             return 1;
           }
-          if (a.points > b.points) {
+          if (a.score > b.score) {
             return -1;
           }
           return 0;
         })
-        [0]
-      ranking.push({user: user, score: game.points})
+      if (game.length > 0)
+        ranking.push({user: user, score: game[0].score})
     })
     return ranking.sort((a, b) => {
       if (a.score < b.score) {
@@ -30,6 +30,8 @@ function Ranking(props) {
       return 0;
     })
   }
+  const [ranking, setRanking] = useState(getRanking())
+
   return (
     <div className="text-center mt-2">
       <h1>Ranking</h1>
@@ -38,9 +40,11 @@ function Ranking(props) {
         <Col md={{ span: 6, offset: 3 }}>
           <ListGroup>
             {
-              getRanking().map((el, index) =>
-                <ListGroup.Item key={index} active={props.user === el.user ? true : false}>{el.user} (<i>{el.score} points</i>)</ListGroup.Item>
-              )
+              ranking.length > 0 ?
+              ranking.map((el, index) =>
+                  <ListGroup.Item key={index} active={props.user === el.user ? true : false}>{el.user} (<i>{el.score} score</i>)</ListGroup.Item>
+                )
+              : <h2>no data available yet</h2>
             }
           </ListGroup>
         </Col>

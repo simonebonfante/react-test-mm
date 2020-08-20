@@ -1,10 +1,10 @@
 import loadFromLocalStorage from '../helpers/LoadFromLocalStorage'
 
-const reducer = (state = loadFromLocalStorage('game') || { questionNumber: 0, points: 0 }, action) => {
+const reducer = (state = loadFromLocalStorage('game') || { questionNumber: 0, score: 0 }, action) => {
   switch (action.type) {
     case "NEXT":
       state.questionNumber = state.questionNumber + 1
-      state.points = state.points + action.payload
+      state.score = state.score + action.payload
       break;
   }
   return state

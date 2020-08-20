@@ -6,7 +6,7 @@ function NewGame(props) {
     var game = JSON.parse(localStorage.getItem('game'))
     game[props.user].push({
       question_number: 0,
-      points: 0,
+      score: 0,
       game_over: false
     })
     localStorage.setItem('game', JSON.stringify(game))
@@ -20,4 +20,4 @@ function NewGame(props) {
 
 export default NewGame
 
-//{"Simone":[{"question_number": 0, "points": 0, "game_over": false}]}
+//{"Simone":[{"question_number": 0, "score": 0, "game_over": false}]}

@@ -5,16 +5,16 @@ function Score(props) {
   var score = JSON.parse(localStorage.getItem('game'))[props.user]
   .filter(el => el.game_over)
   .sort(function(a, b) {
-    if (a.points < b.points) {
+    if (a.score < b.score) {
       return 1;
     }
-    if (a.points > b.points) {
+    if (a.score > b.score) {
       return -1;
     }
     return 0;
   })
   [0]
-  const [best_score, setBestScore] = useState(score ? score.points : 'still none')
+  const [best_score, setBestScore] = useState(score ? score.score : 'still none')
   return (
     <Row>
       <Col>

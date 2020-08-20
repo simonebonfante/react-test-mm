@@ -39,7 +39,7 @@ function App() {
   return (
     <Router>
       <div>
-        <MyNavBar myNickName={user} callBackFromParent={myCallBack} />
+        <MyNavBar myNickName={user} loggedIn={loggedIn} callBackFromParent={myCallBack} />
         <Switch>
           <Route path="/login">
             <Login callBackFromParent={myCallBack} />

@@ -4,23 +4,19 @@ import { Button } from 'react-bootstrap'
 function Artist(props) {
   const [variantButton, setVariantButton] = useState("primary")
 
-  const printOk = () => {
-    var data
+  const evaluateResponse = () => {
     if (props.correct) {
-      data = 'Risposta Esatta'
       setVariantButton("success")
-      props.nextQuestion(1)
+      props.nextQuestion(1, props.track_id)
     } else {
-      data = 'Risposta Sbagliata'
       setVariantButton("danger")
-      props.nextQuestion(0)
+      props.nextQuestion(0, props.track_id)
       
     }
-    alert(data)
   }
 
   return (
-    <Button variant={variantButton} onClick={() => printOk()} disabled={props.disabled}>
+    <Button variant={variantButton} onClick={() => evaluateResponse()} disabled={props.disabled}>
       {props.artist}
     </Button>
   )

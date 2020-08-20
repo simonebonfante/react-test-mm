@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react'
+import config from '../../config'
 
 function CountDown(props) {
-  const [seconds, setSeconds] = useState(15)
+  const [seconds, setSeconds] = useState(config.count_down)
 
   useEffect(() => {
     const myInterval = setInterval(() => {
@@ -14,7 +15,9 @@ function CountDown(props) {
   })
 
   return (
-    <div>Time Left: {seconds}</div>
+    <div className="mt-4">
+      <h1>Time Left: {seconds}</h1>
+    </div>
   )
 }
 

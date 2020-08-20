@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Form, Button } from 'react-bootstrap'
+import { Form, Button, Row, Col } from 'react-bootstrap'
 import {
   Redirect
 } from "react-router-dom";
@@ -21,7 +21,6 @@ function Login(props) {
     return false
   }
   function handleSubmit(event) {
-    alert('E\' stato inserito un nome: ' + nick_name);
     setBoolSave(true)
     event.preventDefault();
   }
@@ -37,7 +36,7 @@ function Login(props) {
       if (!game[nick_name]) {
         game[nick_name] = [{
           question_number: 0,
-          points: 0,
+          score: 0,
           game_over: false
         }]
       }
@@ -47,13 +46,29 @@ function Login(props) {
   }, [boolSave]);
   if(canRender()) {
     return (
-      <form onSubmit={handleSubmit}>
-        <label>
-          Nick Name:
-          <input type="text" value={nick_name} onChange={handleChange} />
-        </label>
-        <input type="submit" value="Submit" />
-      </form>
+      // <form onSubmit={handleSubmit}>
+      //   <label>
+      //     Nick Name:
+      //     <input type="text" value={nick_name} onChange={handleChange} />
+      //   </label>
+      //   <input type="submit" value="Submit" />
+      // </form>
+      <Row className="mt-5">
+        <Col md={{ span: 6, offset: 3 }}>
+        <Form onSubmit={handleSubmit}>
+          <Form.Group controlId="formBasicEmail">
+            <Form.Label>Nick Name</Form.Label>
+            <Form.Control type="text" placeholder="Enter Nick Name" value={nick_name} onChange={handleChange}/>
+            <Form.Text className="text-muted">
+              Enter your nick name and start playing
+            </Form.Text>
+          </Form.Group>
+          <Button variant="primary" type="submit">
+            Submit
+          </Button>
+        </Form>
+        </Col>
+      </Row>
     )
   }
   return <Redirect to="/" />
