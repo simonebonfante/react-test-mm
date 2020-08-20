@@ -12,17 +12,7 @@ function QuizCard(props) {
     setButtonDisabled(true)
     props.nextQuestion(score, track_id)
   }  
-  // // const artists = props.artists
-  // console.log(generateQuizQuestion())
-  // const question = generateQuizQuestion()
-  // // const artists = [
-  // //   { text: 'Tiziano Ferro', correct: false },
-  // //   { text: 'Vasco Rossi', correct: true },
-  // //   { text: 'Ligabue', correct: false },
-  // // ]
-  // // const lyrics = "AAAA "+props.n
-  // const lyrics = question.lyrics
-  // const artists = question.artists
+
 
   useEffect(() => {
     return () => {}

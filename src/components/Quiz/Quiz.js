@@ -20,6 +20,21 @@ function Quiz(props) {
   const [quiz, setQuiz] = useState([])
   const [newGame, setNewGame] = useState(0)
 
+  var bscore = JSON.parse(localStorage.getItem('game'))[props.user]
+  .filter(el => el.game_over)
+  .sort(function(a, b) {
+    if (a.score < b.score) {
+      return 1;
+    }
+    if (a.score > b.score) {
+      return -1;
+    }
+    return 0;
+  })
+  [0]
+
+  const [best_score, setBestScore] = useState(bscore ? bscore.score : 'still none')
+ 
   const shuffle = (array) => {
     for (let i = array.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
@@ -33,7 +48,6 @@ function Quiz(props) {
   }
 
   const getDataQuestionQuiz = () => {
-    console.log(track_list.length)
     let arr = []
     for (let i = 0; i<track_list.length; i++) {
       let artist_tmp = artist_list
@@ -48,7 +62,6 @@ function Quiz(props) {
       ]
       arr[i] = {lyrics: track_list[i].lyrics, artists: shuffle(artists), track_id: track_list[i].track_id}
     }
-    console.log('arr', arr)
     return shuffle(arr)
   }
 
@@ -67,7 +80,6 @@ function Quiz(props) {
       }
     }
     myGame = game[props.user]
-    console.log('Set item', game)
     localStorage.setItem('game', JSON.stringify(game))
     setTimeout(() => {
       setStatusGame(status_game+1)
@@ -115,7 +127,6 @@ function Quiz(props) {
     if(initialState) {
       setInitialState(false)
       MusixMatchService.getTracks().then(async (tl) => {
-        console.log('track_list', tl)
         var track_list = await getTracks(tl)
         setTrackList(track_list)
       }).catch(err => console.log(err))
@@ -127,7 +138,6 @@ function Quiz(props) {
 
   useEffect(() => {
     if(!initialState && quiz.length === 0) {
-      console.log('EI EHIEJEIHJEIEHJE')
       setQuiz(getDataQuestionQuiz())
       setLoading(false)
     }
@@ -141,6 +151,7 @@ function Quiz(props) {
 
   useEffect(() => {
     setGameState(myGame)
+    setBestScore(bscore ? bscore.score : 'still none')
   }, [status_game])
 
   if(canRender()) {
@@ -154,7 +165,7 @@ function Quiz(props) {
           {/* {
             <div className="mb-5"><b>Best Score: {gameState.score} </b></div> 
           } */}
-          <Score user={props.user} score={gameState.score}/>
+          <Score user={props.user} score={gameState.score} best_score={best_score}/>
           { !loading ?
               status_game < track_list.length ?
                 // questionsShuffled(questions)

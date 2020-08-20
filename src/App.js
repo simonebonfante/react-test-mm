@@ -27,7 +27,6 @@ function App() {
   )
 
   const myCallBack = (dataFromChild) => {
-    console.log('Ehi callback: ', dataFromChild)
     setLogin(dataFromChild)
   }
 

@@ -24,7 +24,7 @@ function MyGames(props) {
             {
               mygames.length > 0 ?
               mygames.map((el, index) =>
-                  <ListGroup.Item key={index}>{el.score} score</ListGroup.Item>
+                  <ListGroup.Item key={index}>score: {el.score}</ListGroup.Item>
                 )
               : <h2>no data available yet</h2>
             }

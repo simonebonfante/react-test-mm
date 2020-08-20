@@ -45,7 +45,6 @@ function Game(props) {
       ]
       arr[i] = {lyrics: track_list[i].lyrics, artists: shuffle(artists)}
     }
-    console.log('arr', arr)
     return shuffle(arr)
   }
 
@@ -71,7 +70,6 @@ function Game(props) {
     if(initialState) {
       setInitialState(false)
       MusixMatchService.getTracks().then(async (tl) => {
-        console.log('track_list', tl)
         var track_list = await getTracks(tl)
         setTrackList(track_list)
       }).catch(err => console.log(err))
@@ -81,7 +79,7 @@ function Game(props) {
 
 
   useEffect(() => {
-    console.log('aaa new game')
+    console.log('new game')
   }, [newGame])
 
   return (

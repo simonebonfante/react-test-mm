@@ -42,7 +42,7 @@ function Ranking(props) {
             {
               ranking.length > 0 ?
               ranking.map((el, index) =>
-                  <ListGroup.Item key={index} active={props.user === el.user ? true : false}>{el.user} (<i>{el.score} score</i>)</ListGroup.Item>
+                  <ListGroup.Item key={index} active={props.user === el.user ? true : false}>{el.user} (<i>score: {el.score}</i>)</ListGroup.Item>
                 )
               : <h2>no data available yet</h2>
             }
